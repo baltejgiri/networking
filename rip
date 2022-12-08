@@ -1,0 +1,39 @@
+#RIP Characteristics#
+- The Routing Information Protocol (RIP) is a Distance Vector routing protocol.
+- It uses hop count as its metric
+- The maximum hop coount is 15
+- It will perform Equal Cost Multi path, for up to 4 paths by default
+RIPv2 and RIPv1
+RIPv1 is a legacy protocol which is not typically used anymore (although) it is still supported on Cisco routers)
+RIPv1 does not send subnet mast information with routing updates so Variable Length Masking (VLSM) is not supported. RIv2 does support VLSM.
+RIPv2 updates are send every 30 seconds as broadcast traffic. RIPv2 uses multicast address 244.0.0.9
+RIPv2 supports authentication, RIPv1 does not.
+RIPng
+RIPng (RIP next generation) supports IPv6 networks.
+It is not covered on the CCNA exam.
+    
+RIPv2 Configuration
+    router rip
+    version 2
+    network 10.0.0.0
+- The 'network' command should referance classful network. No subnet mask is specified.
+Auto-Summary
+- RIP will autometically summarise routes to the classful boundray by default
+- For example, 192.168.10.1/30 will be advsertised as 192.168.10.0/24
+- 172.16.10.1/30 will be advsertised as 172.16.0.0/16
+- This is almost never desireable
+    R1 (config) #router rip
+    R1 (config-router) #no auto-summary
+Manual summarisation
+- Manual summarisation gives you control of exactly how you summarise
+- The individual summarised routes are not advertised - only their summary route
+    R2 (config-router) #interface fa0/1
+    R2 (config-if) #ip summary-address rip 10.0.0.0 255.255.0.0
+RIPv2 Verification
+  <show ip protocols>
+RIPv2 Verification -  Database
+  show ip rip datebase
+Default Route Injection
+  ip route 0.0.0.0 0.0.0.0 203.0.113.2
+  route rip
+  default-information originate
